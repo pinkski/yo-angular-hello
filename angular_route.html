@@ -1,0 +1,121 @@
+﻿<!--该demo需要在web服务器环境下运行-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="三人行">
+
+    <title>Angular route</title>
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/pagination.css" rel="stylesheet" />
+</head>
+<body>
+    <h1>A-Mail</h1>
+
+    <!--带有ng-view属性的容器将根据controller的配置显示模板-->
+    <div class="container" ng-app="AMail">
+        <div ng-view></div>
+    </div>
+
+    <script src="js/angular-1.2.2/angular.min.js"></script>
+    <script src="js/angular-1.2.2/angular-route.min.js"></script>
+    <!--主要提供分页功能-->
+    <script src="js/angular-ui-bootstrap.js"></script>
+
+    <script type="text/javascript">
+        (function () {
+            // Create a module for our core AMail services
+            var app = angular.module('AMail', ['ngRoute', 'ui.bootstrap']);
+
+            app.config(['$routeProvider', function ($routeProvider) {
+                $routeProvider.
+                    when('/', { templateUrl: 'template/list.html', controller: 'ListController' }).
+                    when('/view/:id', { templateUrl: 'template/detail.html', controller: 'DetailController' }).
+                    otherwise({ redirectTo: '/' });
+            }]);
+
+            // Publish our messages for the list template
+            var ListController = function ($scope) {
+
+                // Some fake emails
+                messages = [
+                    {
+                        id: 0, sender: 'jean@qq.com', subject: 'Hi there, old friend', date: 'Dec 7, 2013 12:32:00', recipients: ['greg@qq.com'],
+                        message: 'Hey, we should get together for lunch sometime and catch up.' + 'There are many things we should collaborate on this year.'
+                    },
+                    {
+                        id: 1, sender: 'maria@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 2, sender: 'liupras@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 3, sender: '56008507@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 4, sender: 'zsw@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 5, sender: 'zx@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 6, sender: 'lp@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 7, sender: 'tys@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 8, sender: 'yws@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 9, sender: 'cjj@qq.com', subject: 'Where did you leave my laptop?', date: 'Dec 7, 2013 8:15:12', recipients: ['greg@qq.com'],
+                        message: 'I thought you were going to put it in my desk drawer.' + 'But it does not seem to be there.'
+                    },
+                    {
+                        id: 10, sender: 'bill@qq.com', subject: 'Lost python', date: 'Dec 6, 2013 20:35:02', recipients: ['greg@qq.com'],
+                        message: "Nobody panic, but my pet python is missing from her cage.'     +'She doesn't move too fast, so just call me if you see her."
+                    }
+                ];
+
+                $scope.allmessages = messages;
+
+                //paging
+                $scope.totalRecords = messages.length;
+                $scope.pageSize = 5;
+                $scope.currentPage = 1;
+                $scope.messages = messages.slice(0, $scope.pageSize);
+
+                $scope.pageChanged = function (page) {
+                    $scope.currentPage = page;
+                    var startpos = (page - 1) * $scope.pageSize;
+                    $scope.messages = $scope.allmessages.slice(startpos, startpos + $scope.pageSize);
+                };
+            }
+
+            app.controller('ListController', ListController);
+
+            // Get the message id from the route (parsed from the URL) and use it to
+            // find the right message object.
+            var DetailController = function ($scope, $routeParams) {
+                $scope.message = messages[$routeParams.id];
+            }
+
+            app.controller('DetailController', DetailController);
+
+        }());
+    </script>
+</body>
+</html>

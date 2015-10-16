@@ -1,0 +1,26 @@
+﻿<table>
+    <tr>
+        <td><strong>Sender</strong></td>
+        <td><strong>Subject</strong></td>
+        <td><strong>Date</strong></td>
+    </tr>
+    <tr ng-repeat='message in messages'>
+        <td>{{message.sender}}</td>
+        <td><a href='#/view/{{message.id}}'>{{message.subject}}</td>
+        <td>{{message.date}}</td>
+    </tr>
+</table>
+<hr />
+
+<div class="row" data-ng-show="messages.length > 0">
+    <div class="col-md-12">
+        <div data-pagination
+            data-on-select-page="pageChanged(page)"
+            data-total-items="totalRecords"
+            data-page="currentPage"
+            data-items-per-page="pageSize"
+            data-boundary-links="true"
+            class="pagination-sm">
+        </div>
+    </div>
+</div>

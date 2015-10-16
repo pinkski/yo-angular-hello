@@ -1,0 +1,56 @@
+<!doctype html>
+<html ng-app="changeExample">
+<head>
+</head>
+<body ng-controller="ExampleController" style="font-size: 24px;background: gray;color: greenyellow">
+
+    <!-- demo 1 -->
+    please input:<input type="text" ng-model="yourname" placeholder="World">
+    <br><br>
+    Hello {{yourname || "world"}}!
+
+    <hr><br><br><br>
+
+    <!-- demo 2 -->
+    <div>
+        <select name="sel_languages" ng-model="language" ng-change="changelan()">
+            <option value=""></option>
+            <option value="en-us">en-us</option>
+            <option value="zh-ch">zh-ch</option>
+        </select>
+        <input type="text" ng-model="testname" ng-change="change()" id="ng-change-example1" />
+    </div>
+
+</body>
+
+<script src="js/angular-1.2.2/angular.min.js"></script>
+
+<script>
+    //step1: the main module
+    var changeExample = angular.module('changeExample', []);
+
+    //step2: add a controller
+    changeExample.controller('ExampleController', ['$scope', function ($scope) {
+          $scope.testname = "";
+          $scope.change = function () {
+              alert($scope.testname);
+          };
+
+          $scope.language = "zh-ch";
+          $scope.changelan = function () {
+              alert($scope.language);
+          };
+      }]);
+
+    //add a filter
+    changeExample.filter('myUpperFilter', function(){
+        return function(input){
+            return input.toUpperCase();
+        }
+    });
+
+    //add a directive...
+
+</script>
+
+</html>
